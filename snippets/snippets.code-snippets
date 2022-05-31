@@ -1,0 +1,535 @@
+{
+    "register_post_type": {
+        "prefix": "rpt",
+        "body": [
+          "function custom_post_${1}_init() {",
+          "    $$labels = array(",
+          "        'name'                  => _x( '${2}', 'Post type general name', 'textdomain' ),",
+          "        'singular_name'         => _x( '${2}', 'Post type singular name', 'textdomain' ),",
+          "        'menu_name'             => _x( '${2}s', 'Admin Menu text', 'textdomain' ),",
+          "        'name_admin_bar'        => _x( '${2}', 'Add New on Toolbar', 'textdomain' ),",
+          "        'add_new'               => __( 'Add New', 'textdomain' ),",
+          "        'add_new_item'          => __( 'Add New ${2}', 'textdomain' ),",
+          "        'new_item'              => __( 'New ${2}', 'textdomain' ),",
+          "        'edit_item'             => __( 'Edit ${2}', 'textdomain' ),",
+          "        'view_item'             => __( 'View ${2}', 'textdomain' ),",
+          "        'all_items'             => __( 'All ${2}s', 'textdomain' ),",
+          "        'search_items'          => __( 'Search ${2}s', 'textdomain' ),",
+          "        'parent_item_colon'     => __( 'Parent ${2}s:', 'textdomain' ),",
+          "        'not_found'             => __( 'No ${2}s Found.', 'textdomain' ),",
+          "        'not_found_in_trash'    => __( 'No ${2}s found In Trash.', 'textdomain' ),",
+          "        'featured_image'        => _x( 'Book Cover Image', 'Overrides the “Featured Image” phrase for this post type. Added in 4.3', 'textdomain' ),",
+          "        'set_featured_image'    => _x( 'Set Cover Image', 'Overrides the “Set featured image” phrase for this post type. Added in 4.3', 'textdomain' ),",
+          "        'remove_featured_image' => _x( 'Remove Cover Image', 'Overrides the “Remove featured image” phrase for this post type. Added in 4.3', 'textdomain' ),",
+          "        'use_featured_image'    => _x( 'Use As Cover Image', 'Overrides the “Use as featured image” phrase for this post type. Added in 4.3', 'textdomain' ),",
+          "        'archives'              => _x( '${2} Archives', 'The post type archive label used in nav menus. Default “Post Archives”. Added in 4.4', 'textdomain' ),",
+          "        'insert_into_item'      => _x( 'Insert Into ${2}', 'Overrides the “Insert into post”/”Insert into page” phrase (used when inserting media into a post). Added in 4.4', 'textdomain' ),",
+          "        'uploaded_to_this_item' => _x( 'Uploaded To This ${2}', 'Overrides the “Uploaded to this post”/”Uploaded to this page” phrase (used when viewing media attached to a post). Added in 4.4', 'textdomain' ),",
+          "        'filter_items_list'     => _x( 'Filter ${2} list', 'Screen reader text for the filter links heading on the post type listing screen. Default “Filter posts list”/”Filter pages list”. Added in 4.4', 'textdomain' ),",
+          "        'items_list_navigation' => _x( '${2} List Navigation', 'Screen reader text for the pagination heading on the post type listing screen. Default “Posts list navigation”/”Pages list navigation”. Added in 4.4', 'textdomain' ),",
+          "        'items_list'            => _x( '${2} List', 'Screen reader text for the items list heading on the post type listing screen. Default “Posts list”/”Pages list”. Added in 4.4', 'textdomain' ),",
+          "    );",
+          " ",
+          "    $$args = array(",
+          "        'labels'             => $$labels,",
+          "        'public'             => true,",
+          "        'publicly_queryable' => true,",
+          "        'show_ui'            => true,",
+          "        'show_in_menu'       => true,",
+          "        'query_var'          => true,",
+          "        'rewrite'            => array( 'slug' => 'book' ),",
+          "        'capability_type'    => 'vehicle',",
+          "        'has_archive'        => true,",
+          "        'hierarchical'       => false,",
+          "        'menu_position'      => null,",
+          "           'taxonomies'      => array( 'category', 'post_tag' ),",
+          "        'supports'           => array( 'title', 'editor', 'author', 'thumbnail', 'excerpt', 'comments' ),",
+          "    );",
+          " ",
+          "    register_post_type( '${3:post_type_name}', $$args );",
+          "}",
+          " ",
+          "add_action( 'init', 'custom_post_${1}_init' );"
+        ],
+        "description": "complete register post type boiler plate"
+      },
+      "sanitize_text": {
+        "prefix": "san",
+        "body": [
+          "sanitize_text_field()"
+        ],
+        "description": "sanitize_text"
+      },
+      "rest_api": {
+        "prefix": "rest",
+        "body": [
+          "add_action('rest_api_init', '${1:initFunctionName}');",
+          "",
+          "function ${1:route}() {",
+          "  register_rest_route('${2:namespace}/v1', '${3:route}', array(",
+          "    'methods' => 'POST',",
+          "    'callback' => '${4:functionName}'",
+          "  ));",
+          "",
+          "  register_rest_route('${2:namespace}/v1', '${3:route}', array(",
+          "    'methods' => 'DELETE',",
+          "    'callback' => '${5:functionName}'",
+          "  ));",
+          "",
+          " register_rest_route('${2:namespace}/v1', '${3:route}', array(",
+          "    'methods' => WP_REST_SERVER::READABLE,",
+          "    'callback' => '${6:functionName}'",
+          "  ));",
+          "}",
+          "",
+          "function ${4:functionName}($$data) {",
+          "   return 'Hello world';",
+          "}",
+          "",
+          "function ${5:functionName}($$data) {",
+          "  return 'Hello world';",
+          "}",
+          "",
+          "function ${6:functionName}($$data){",
+          "  return 'Hello world';",
+          "}"
+        ],
+        "description": "rest_api"
+      },
+      "wp_enqueue_scripts": {
+        "prefix": "scripts",
+        "body": [
+          "function ${1:yourThemeName}() {",
+          "    wp_enqueue_script('${2:yourScript}', get_theme_file_uri('${3:filePathNameFromThemeRoot}'), array(), '1.0', true);",
+          "    wp_enqueue_style('${4:yourStyle}', get_theme_file_uri('${5:filePathNameFromThemeRoot}'),array(),'1.0',false);",
+          "    wp_localize_script('${2:yourScript}', '${6:nameToCallScript}', array(",
+          "    'root_url' => get_site_url(),",
+          "    'nonce' => wp_create_nonce('wp_rest')",
+          "    ));",
+          "}",
+          "add_action('wp_enqueue_scripts', '${1:yourThemeName}');"
+        ],
+        "description": "wp_enqueue_scripts"
+      },
+      "logout": {
+        "prefix": "logout",
+        "body": [
+          " <a href=\"<?php echo wp_logout_url();  ?>\" class=\"${1:classNames}\">${2:Logout}</a>"
+        ],
+        "description": "logout"
+      },
+      "site_url": {
+        "prefix": "site_url",
+        "body": [
+          " echo esc_url(site_url('${1:/pageName}')); "
+        ],
+        "description": "site_url"
+      },
+      "is_user_logged_in": {
+        "prefix": "is_user_logged_in",
+        "body": [
+          "<?php if(is_user_logged_in()) { ?>",
+          "           ",
+          " <?php } else { ?>",
+          "         ",
+          "  <?php } ?>"
+        ],
+        "description": "is_user_logged_in"
+      },
+      "body_class": {
+        "prefix": "body_class",
+        "body": [
+          "body_class();"
+        ],
+        "description": "body_class"
+      },
+      "Get Header": {
+        "prefix": "header",
+        "body": [
+          "get_header();"
+        ],
+        "description": "Get Header"
+      },
+      "Get Footer": {
+        "prefix": "footer",
+        "body": [
+          "get_footer();"
+        ],
+        "description": "Get Footer"
+      },
+      "Dump And Die": {
+        "prefix": "DD",
+        "body": [
+          "echo '<pre>';",
+          "     print_r();",
+          " echo'</pre>';",
+          "       die();"
+        ],
+        "description": "Dump And Die"
+      },
+      "Dump": {
+        "prefix": "D",
+        "body": [
+          "echo '<pre>';",
+          "     print_r();",
+          " echo'</pre>';"
+        ],
+        "description": "Dump"
+      },
+      "add_options_page": {
+        "prefix": "add_options_page",
+        "body": [
+          " /*document title, Page Title (tab in browser), rules and permision, slug for the page, function the outputs html*/",
+          "add_options_page( string $page_title, string $menu_title, string $capability, string $menu_slug, callable $function = '', int $position = null )"
+        ],
+        "description": "add_options_page"
+      },
+      "add_settings_section": {
+        "prefix": "add_settings_section",
+        "body": [
+          " /*name of section, title, subheader, page slug*/",
+          "  add_settings_section('section', null, null, 'settings-page');"
+        ],
+        "description": "add_settings_section"
+      },
+      "add_settings_field": {
+        "prefix": "add_settings_field",
+        "body": [
+          "/**Name of the group,Label tag, html, pageslug,section to this field */",
+          "add_settings_field('location', 'Display Location', array($this, 'locationHTML'), 'settings-page', 'first_section');"
+        ],
+        "description": "add_settings_field"
+      },
+      "get_option()": {
+        "prefix": "get_option()",
+        "body": [
+          "/**Compares the first two arguments and if identical marks as selected*/",
+          "get_option()"
+        ],
+        "description": "get_option()"
+      },
+      "Add Route No Param": {
+        "prefix": "add_route_no_param",
+        "body": [
+          "$${1:theme_routes = new CustomRoutes();}",
+          "$$theme_routes->addRoute('${2:name-of-routes}',function(){},${3:plugin_dir_path( dirname( __FILE__ ) )} ${4:plugin_dir_path( dirname( __FILE__ ) )} .'/file-path');",
+          "$${5:theme_routes->forceFlush();}"
+        ],
+        "description": "Add Route One Param"
+      },
+      "wp_query_all_args": {
+        "prefix": "wp_query_all_args",
+        "body": [
+          "        //'order' => 'DESC', // (string) - Designates the ascending or descending order of the 'orderby' parameter. Default to 'DESC'.",
+          "            //Possible Values:",
+          "            //'ASC' - ascending order from lowest to highest values (1, 2, 3; a, b, c).",
+          "            //'DESC' - descending order from highest to lowest values (3, 2, 1; c, b, a).",
+          "        //'orderby' => 'date', // (string) - Sort retrieved posts by parameter. Defaults to 'date'. One or more options can be passed. EX: 'orderby' => 'menu_order title'",
+          "                //Possible Values:",
+          "                // 'none' - No order (available since Version 2.8).",
+          "                // 'ID' - Order by post id. Note the capitalization.",
+          "                // 'author' - Order by author. ('post_author' is also accepted.)",
+          "                // 'title' - Order by title. ('post_title' is also accepted.)",
+          "                // 'name' - Order by post name (post slug). ('post_name' is also accepted.)",
+          "                // 'type' - Order by post type (available since Version 4.0). ('post_type' is also accepted.)",
+          "                // 'date' - Order by date. ('post_date' is also accepted.)",
+          "                // 'modified' - Order by last modified date. ('post_modified' is also accepted.)",
+          "                // 'parent' - Order by post/page parent id. ('post_parent' is also accepted.)",
+          "                // 'rand' - Random order. You can also use 'RAND(x)' where 'x' is an integer seed value.",
+          "                // 'comment_count' - Order by number of comments (available since Version 2.9).",
+          "                // 'relevance' - Order by search terms in the following order: First, whether the entire sentence is matched. Second, if all the search terms are within the titles. Third, if any of the search terms appear in the titles. And, fourth, if the full sentence appears in the contents.",
+          "                // 'menu_order' - Order by Page Order. Used most often for Pages (Order field in the Edit Page Attributes box) and for Attachments (the integer fields in the Insert / Upload Media Gallery dialog), but could be used for any post type with distinct 'menu_order' values (they all default to 0).",
+          "                // 'meta_value' - Note that a 'meta_key=keyname' must also be present in the query. Note also that the sorting will be alphabetical which is fine for strings (i.e. words), but can be unexpected for numbers (e.g. 1, 3, 34, 4, 56, 6, etc, rather than 1, 3, 4, 6, 34, 56 as you might naturally expect). Use 'meta_value_num' instead for numeric values.",
+          "                // 'meta_type' if you want to cast the meta value as a specific type. Possible values are 'NUMERIC', 'BINARY',  'CHAR', 'DATE', 'DATETIME', 'DECIMAL', 'SIGNED', 'TIME', 'UNSIGNED', same as in '$meta_query'. When using 'meta_type' you can also use 'meta_value_*' accordingly. For example, when using DATETIME as 'meta_type' you can use 'meta_value_datetime' to define order structure.",
+          "                // 'meta_value_num' ",
+          "        $args = array(",
+          "            'p'=>'',//post_id",
+          "            'post_type' => 'post',",
+          "            'posts_per_page' => 20,",
+          "            'meta_key' => 'order',",
+          "            'orderby' => 'meta_value',",
+          "            'order' => 'ASC',",
+          "            'post__not_in' => array(''),",
+          "            'paged' => '',//query var of page",
+          "            'meta_query' => array(",
+          "                            array(",
+          "                                'relation' => 'OR',",
+          "                                array(",
+          "                                    'key' => 'size',",
+          "                                    'value' => 'xl',",
+          "                                    'type' => 'CHAR',",
+          "                                    'compare' => '='",
+          "                                ),",
+          "                                array(",
+          "                                    'key' => 'color',",
+          "                                    'value' => 'purple',",
+          "                                    'type' => 'CHAR',",
+          "                                    'compare' => '='",
+          "                                )",
+          "",
+          "                            ),",
+          "                            array(",
+          "                                'key' => '',",
+          "                                'value' => '',",
+          "                                'type' => '',",
+          "                                'compare' => ''",
+          "                            ),",
+          "                            array(",
+          "                                'key' => 'price',",
+          "                                'value' => array(1,30),",
+          "                                'type' => 'NUMERIC',",
+          "                                'compare' => 'BETWEEN'",
+          "                            )",
+          "                        ),",
+          "            //can prefix each query with __and, __not_in, __in must spell out full category name, __and dosent work for author",
+          "            'cat'  =>'',",
+          "            'tag'=>'',",
+          "            'author'=>'',",
+          "            'tax_query' => array( // (array) - use taxonomy parameters (available with Version 3.1).",
+          "                        'relation' => 'AND', // (string) - The logical relationship between each inner taxonomy array when there is more than one. Possible values are 'AND', 'OR'. Do not use with a single inner taxonomy array. Default value is 'AND'.",
+          "                            array(",
+          "                                'taxonomy' => 'color', // (string) - Taxonomy.",
+          "                                'field' => 'slug', // (string) - Select taxonomy term by Possible values are 'term_id', 'name', 'slug' or 'term_taxonomy_id'. Default value is 'term_id'.",
+          "                                'terms' => array( 'red', 'blue' ), // (int/string/array) - Taxonomy term(s).",
+          "                                'include_children' => true, // (bool) - Whether or not to include children for hierarchical taxonomies. Defaults to true.",
+          "                                'operator' => 'IN' // (string) - Operator to test. Possible values are 'IN', 'NOT IN', 'AND', 'EXISTS' and 'NOT EXISTS'. Default value is 'IN'.",
+          "                            )",
+          "                                ),",
+          "            'year' => 2014, // (int) - 4 digit year (e.g. 2011).",
+          "            'monthnum' => 4, // (int) - Month number (from 1 to 12).",
+          "            'w' =>  25, // (int) - Week of the year (from 0 to 53). Uses the MySQL WEEK command. The mode is dependenon the \"start_of_week\" option.",
+          "            'day' => 17, // (int) - Day of the month (from 1 to 31).",
+          "            'hour' => 13, // (int) - Hour (from 0 to 23).",
+          "            'minute' => 19, // (int) - Minute (from 0 to 60).",
+          "            'second' => 30, // (int) - Second (0 to 60).",
+          "            'm' => 201404, // (int) - YearMonth (For e.g.: 201307).",
+          "            'date_query' => array( // (array) - Date parameters (available with Version 3.7).",
+          "                                // these are super powerful. check out the codex for more comprehensive code examples http://codex.wordpress.org/Class_Reference/WP_Query#Date_Parameters",
+          "                                    array(",
+          "                                        'year' => 2014, // (int) - 4 digit year (e.g. 2011).",
+          "                                        'month' => 4, // (int) - Month number (from 1 to 12).",
+          "                                        'week' => 31, // (int) - Week of the year (from 0 to 53).",
+          "                                        'day' => 5, // (int) - Day of the month (from 1 to 31).",
+          "                                        'hour' => 2, // (int) - Hour (from 0 to 23).",
+          "                                        'minute' => 3, // (int) - Minute (from 0 to 59).",
+          "                                        'second' => 36, // (int) - Second (0 to 59).",
+          "                                        'after' => 'January 1st, 2013', // (string/array) - Date to retrieve posts after. Accepts strtotime()-compatible string, or array of 'year', 'month', 'day'",
+          "                                        'before' => array( // (string/array) - Date to retrieve posts after. Accepts strtotime()-compatible string, or array of 'year', 'month', 'day'",
+          "                                        'year' => 2013, // (string) Accepts any four-digit year. Default is empty.",
+          "                                        'month' => 2, // (string) The month of the year. Accepts numbers 1-12. Default: 12.",
+          "                                        'day' => 28, // (string) The day of the month. Accepts numbers 1-31. Default: last day of month.",
+          "                                        ),",
+          "                                        'inclusive' => true, // (boolean) - For after/before, whether exact value should be matched or not'.",
+          "                                        'compare' =>  '=', // (string) - Possible values are '=', '!=', '>', '>=', '<', '<=', 'LIKE', 'NOT LIKE', 'IN', 'NOT IN', 'BETWEEN', 'NOT BETWEEN', 'EXISTS' (only in WP >= 3.5), and 'NOT EXISTS' (also only in WP >= 3.5). Default value is '='",
+          "                                        'column' => 'post_date', // (string) - Column to query against. Default: 'post_date'.",
+          "                                        'relation' => 'AND', // (string) - OR or AND, how the sub-arrays should be compared. Default: AND.",
+          "                                    ),",
+          "                                    ),",
+          "                );",
+          "                $query = new WP_Query($args);"
+        ],
+        "description": "wp_query_all_args"
+      },
+      "the_loop": {
+        "prefix": "the_loop",
+        "body": [
+          "$the_query = new WP_Query( $args );",
+          "",
+          "// The Loop",
+          "if ( $the_query->have_posts() ) :",
+          "while ( $the_query->have_posts() ) : $the_query->the_post();",
+          "  // Do Stuff",
+          "endwhile;",
+          "endif;",
+          "",
+          "// Reset Post Data",
+          "wp_reset_postdata();",
+          ""
+        ],
+        "description": "the_loop"
+      },
+      "insert_post": {
+        "prefix": "insert_post",
+        "body": [
+          "$my_post = array(",
+          "    'post_title'    => 'My post',",
+          "    'post_content'  => 'This is my post.',",
+          "    'post_type' => 'post_type',",
+          "    'post_status' => 'publish',",
+          "    'meta_input' => array(",
+          "          'meta_val' => $meta_value",
+          "        )",
+          ");",
+          "wp_insert_post( $my_post );"
+        ],
+        "description": "insert_post"
+      },
+      "delete_post": {
+        "prefix": "delete_post",
+        "body": [
+          "wp_delete_post( int $postid, bool $force_delete = false )"
+        ],
+        "description": "delete_post"
+      },
+      "exist_query ": {
+        "prefix": "exist_query",
+        "body": [
+          "  $exist_query = new WP_Query(array(",
+          "    'author' => get_current_user_id(),",
+          "    'post_type' => 'your_post_type',",
+          "    'meta_query' => array(",
+          "      array(",
+          "        'key' => 'meta_key',",
+          "        'compare' => '=',",
+          "        'value' => $data['that_your_seeing_exist']",
+          "      )",
+          "    )",
+          "  ));",
+          "if($exist_query->found_posts == 0){",
+          "  //create",
+          "}else{",
+          "  //update or die()",
+          "}"
+        ],
+        "description": "exist_query "
+      },
+      "get_post_meta": {
+        "prefix": "get_post_meta",
+        "body": [
+          "get_post_meta( int $post_id, string $key = '', bool $single = false )"
+        ],
+        "description": "get_post_meta"
+      },
+      "update_post_meta": {
+        "prefix": "update_post_meta",
+        "body": [
+          "update_post_meta( int $post_id, string $meta_key, mixed $meta_value,",
+          " mixed optional_same_key $prev_value = '' )",
+          ""
+        ],
+        "description": "update_post_meta"
+      },
+      "delete_post_meta": {
+        "prefix": "delete_post_meta",
+        "body": [
+          "delete_post_meta( int $post_id, string $meta_key, mixed $meta_value = '' )"
+        ],
+        "description": "delete_post_meta"
+      },
+      "custom_route": {
+        "prefix": "custom_route",
+        "body": [
+          "",
+          "class Custom_Route {",
+          "",
+          "/**",
+          " *  How to use:",
+          " *  Require this in functions.php file",
+          " *  Create a new instance of this class:",
+          " *",
+          " *  Argument 1: Url file path",
+          " *  Argument 2: Array of query variables that come from the url path. Number of regex in url file path must match the amount of query params",
+          " *  Argument 3: file path to template",
+          " *  Argument 4: Boolean. True will rebuild the permalink structure. Recomend you dont use this for production. ",
+          " * ",
+          " *  Example:",
+          " *  new Custom_Route('my-unique-route/(.+?)/(.+?)/?$',array('param_1','param_2'),'public/path_to_template_file.php',true);",
+          " * ",
+          " *  Template File:",
+          " *  To get the value of query variable just echo get_query_var('param_1');",
+          " * ",
+          "*/",
+          "public $route_name;",
+          "",
+          "	public $query_name;",
+          "",
+          "	public $route_path;",
+          "	",
+          "	public $params;",
+          "",
+          "	public $forch_flush;",
+          "",
+          "	public function __construct($route_name,$query_name,$route_path,$forch_flush) ",
+          "	{",
+          "",
+          "	",
+          "		$this->route_name = $route_name;",
+          "		$this->query_name = $query_name;",
+          "		$this->route_path = $route_path;",
+          "		$this->forch_flush = $forch_flush;",
+          "		",
+          "		$this->query_name_array = $query_name;",
+          "	",
+          "		add_action('init' , array($this,'add_custom_rewrite'));",
+          "		add_filter('query_vars' ,  array($this, 'add_custom_query_vars'));",
+          "		add_action('template_include' , array($this, 'add_custom_template_include'));",
+          "		add_action('init', array($this,'change_permalinks_option'));",
+          "",
+          "		add_action('after-switch-theme', array($this,'change_permalinks_option'));",
+          "	",
+          "		",
+          "	}",
+          "",
+          "    public function add_custom_rewrite()",
+          "    {",
+          "		$str = '';",
+          "		$keys=1;",
+          "	   foreach ($this->query_name_array  as $value) {",
+          "			   $str .= $value .'=$matches['.$keys.']&';",
+          "			   $keys++;",
+          "	   ",
+          "	   }",
+          "",
+          "		add_rewrite_rule( $this->route_name , 'index.php?'. $str , 'top' );",
+          "    }",
+          "",
+          "",
+          "    public function add_custom_query_vars($query_vars)",
+          "    {",
+          "			foreach ($this->query_name_array as $value) {",
+          "				$query_vars[] = $value;",
+          "			}",
+          "			",
+          "			return $query_vars;",
+          "    }",
+          "",
+          "",
+          "    public function add_custom_template_include($template)",
+          "    {",
+          "",
+          "			foreach ($this->query_name_array as $value) {",
+          "				if ( get_query_var( $value ) == false || get_query_var( $value ) == '' ) {",
+          "					return $template;",
+          "				}",
+          "			}",
+          "				return  get_template_directory() . $this->route_path;",
+          "    }",
+          "",
+          "",
+          "",
+          "	public function change_permalinks_option()",
+          "	{",
+          "		if($this->forch_flush == true){",
+          "			global $wp_rewrite;",
+          "			$wp_rewrite->set_permalink_structure('/%postname%/');",
+          "			$wp_rewrite->flush_rules();",
+          "		}",
+          "	",
+          "	}",
+          "",
+          "",
+          "",
+          "}"
+        ],
+        "description": "custom_route"
+      },
+      "add_custom_route": {
+        "prefix": "add_custom_route",
+        "body": [
+          "Custom_Route('my-unique-route/(.+?)/(.+?)/?$',array('param_1','param_2'),'public/path_to_template_file.php',true);"
+        ],
+        "description": "add_custom_route"
+      }
+
+  
+}
